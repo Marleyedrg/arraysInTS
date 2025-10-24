@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "target": "ES6", // versão do JS gerado
+    "module": "commonjs", // sistema de módulos
+    "rootDir": "./src", // pasta dos arquivos TS
+    "outDir": "./dist", // pasta do JS compilado
+    "strict": true // checagem rigorosa de tipos
+  }
+}

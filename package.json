@@ -1,0 +1,27 @@
+{
+  "name": "arraysints",
+  "version": "1.0.0",
+  "description": "This is part one of a project on studying algorithms and data structures that I am working on.",
+  "main": "index.js",
+  "scripts": {
+    "build": "esbuild src/index.ts --bundle --outfile=dist/index.js --platform=node --target=es2020",
+    "watch": "esbuild src/index.ts --bundle --outfile=dist/index.js --platform=node --target=es2020 --watch",
+    "see": "npm run build && node dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Marleyedrg/arraysInTS.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Marleyedrg/arraysInTS/issues"
+  },
+  "homepage": "https://github.com/Marleyedrg/arraysInTS#readme",
+  "devDependencies": {
+    "@types/node": "^24.9.1",
+    "esbuild": "^0.25.11",
+    "typescript": "^5.9.3"
+  }
+}
