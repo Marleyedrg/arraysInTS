@@ -9,28 +9,36 @@ export class Arr<T> {
   */
   private items: (T | undefined)[];
   private firstType?: string;
+  public presum: number[];
+  public size: number;
 
-  constructor(size: number = 1) {
+  public constructor(size: number = 1) {
     this.items = new Array(size);
     // Create the internal fixed-size array for this instance
+    this.size = this.sizeMethod();
+    this.presum = new Array(size);
   };
 
-  set(index: number, value: T) {
+  public set(index: number, value: T) {
     this.checkIndex(index);
     this.checkType(value);
     this.items[index] = value;
+    //if value of array is not number, update presum
+    if (typeof value == "number") {
+      this.updatePreSum();
+    };
   };
 
-  get(index: number): T | undefined {
+  public get(index: number): T | undefined {
     this.checkIndex(index);
     return this.items[index];
   };
 
-  size(): number {
+  private sizeMethod(): number {
     return this.items.length
   };
 
-  remove(index: number): T | undefined {
+  public remove(index: number): T | undefined {
     const removed = this.items[index];
     this.items[index] = undefined;
     return removed;
@@ -55,8 +63,43 @@ export class Arr<T> {
     }
   }
 
-  toLiteral(): (T | undefined)[] {
+  public toLiteral(): (T | undefined)[] {
     return [...this.items];
   }
 
+  private updatePreSum() {
+    //we dont need verify each value of array, because the method checkType
+    //
+
+    const result: number[] = new Array(this.size);
+
+    let acc = 0;
+
+    for (let i = 0; i < this.size; i++) {
+      const val = (this.items[i] as number) ?? 0
+      //?? 0 → if undefined, define to 0.
+      acc += val;
+      result[i] = acc;
+    }
+    this.presum = result;
+  }
+
+  public rangeSum(startRange: number, finalRange: number): number {
+    this.checkIndex(startRange);
+    this.checkIndex(finalRange);
+
+    let toTheExtendIwant = this.presum[finalRange];
+    //sum of everything that comes before the value of that finalRange that i want
+
+    let whatIdontWant = this.presum[startRange - 1];
+    //sum of everything that comes before the value of that start range that i want
+
+    if (startRange === 0) return this.presum[finalRange];
+
+    return toTheExtendIwant - whatIdontWant;
+  }
+
 }
+
+// 0 =1
+// 0 + 1
