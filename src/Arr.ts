@@ -96,7 +96,13 @@ export class Arr<T> {
 
     if (startRange === 0) return this.presum[finalRange];
 
-    return toTheExtendIwant - whatIdontWant;
+    //Where can I find the sum of the part I don’t want?
+    //
+    // In the preSum array, at the index immediately before my starting index.
+
+    let justWhatIwant = toTheExtendIwant - whatIdontWant;
+
+    return justWhatIwant;
   }
 
 }
