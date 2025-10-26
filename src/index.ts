@@ -1,11 +1,12 @@
 import { Arr } from "./Arr.ts"
 //https://tejaswinimr.medium.com/mastering-data-structures-and-algorithms-a-step-by-step-roadmap-9d5a8aa4a798
 
-let arr = new Arr<number>(3, [2,]);
+let arr = new Arr<number>(3, [2, 1, 5]);
 
-console.log(arr.set(1, 2));
 
-let a = arr;
+arr.shift()
 
-console.log(a.get())
+arr.set(2, 6);
+
+console.log(arr.length);
 

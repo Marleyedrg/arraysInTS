@@ -1,5 +1,6 @@
 export class Arr<T> {
   private size: number;
+  public length: number;
   private items: T[];
   private arrType: string;
 
@@ -10,7 +11,8 @@ export class Arr<T> {
 
     this.items = items;
     this.arrType = Array.isArray(items[0]) ? "array" : typeof items[0];
-    this.size = size
+    this.size = size;
+    this.length = size;
 
     this.validate();
   }
@@ -64,4 +66,32 @@ export class Arr<T> {
 
     this.items[index] = value;
   }
+
+  private removeAt(index: number): T | T[] {
+    let value = this.items[index];
+
+    let itemType = Array.isArray(value) ? "array" : typeof value;
+
+    this.items[index] = this.nothingType(itemType);
+
+    return value;
+  }
+
+  public shift(): T | T[] {
+    let index = 0;
+    let removed = this.removeAt(index);
+
+    // move elemts to left
+    for (let i = index; i < this.size - 1; i++) {
+      this.items[i] = this.items[i + 1];
+    }
+
+    // Clears the last slot 
+    this.items[this.size - 1] = this.nothingType(this.arrType);
+    return removed;
+  };
+  public pop(): T | T[] {
+    return this.removeAt(this.size - 1);
+  };
 }
+
