@@ -1,6 +1,6 @@
 export class Arr<T> {
   private size: number;
-  private items: any;
+  private items: T[];
   private arrType: string;
 
   constructor(size: number, items: T[]) {
@@ -48,13 +48,10 @@ export class Arr<T> {
     return [...this.items];
   }
 
-  public set(index: number, value: T | T[] | {}): void {
+  public set(index: number, value: any): void {
 
-    if (index >= this.size) {
+    if (index > this.size) {
       throw new Error("Array size exceeded!");
-    }
-    if (index < 0) {
-      throw new Error("negative index???");
     }
 
     let itemType = Array.isArray(value) ? "array" : typeof value;
