@@ -1,111 +1,70 @@
-/**
- * Class that simulates a fixed-size, generically typed array.
- * @template T - Type of the array elements
- */
 export class Arr<T> {
-  /*
-  It should not be static, because each array needs to be independent.
-  <T> tipagem gênerica
-  */
-  private items: (T | undefined)[];
-  private firstType?: string;
-  public presum: number[];
-  public size: number;
+  private size: number;
+  private items: any;
+  private arrType: string;
 
-  public constructor(size: number = 1) {
-    this.items = new Array(size);
-    // Create the internal fixed-size array for this instance
-    this.size = this.sizeMethod();
-    this.presum = new Array(size);
-  };
+  constructor(size: number, items: T[]) {
+    if (items.length > size) {
+      throw new Error("Array size exceeded!");
+    }
 
-  public set(index: number, value: T) {
-    this.checkIndex(index);
-    this.checkType(value);
-    this.items[index] = value;
-    //if value of array is not number, update presum
-    if (typeof value == "number") {
-      this.updatePreSum();
-    };
-  };
+    this.items = items;
+    this.arrType = Array.isArray(items[0]) ? "array" : typeof items[0];
+    this.size = size
 
-  public get(index: number): T | undefined {
-    this.checkIndex(index);
-    return this.items[index];
-  };
-
-  private sizeMethod(): number {
-    return this.items.length
-  };
-
-  public remove(index: number): T | undefined {
-    const removed = this.items[index];
-    this.items[index] = undefined;
-    return removed;
+    this.validate();
   }
 
-  private checkIndex(index: number) {
-    if (index < 0 || index >= this.items.length) {
-      throw new Error(`index ${index} out of bounds`);
-    };
-  };
+  private nothingType(type: string): any {
+    if (type === "string") return "";
+    if (type === "number") return 0;
+    if (type === "boolean") return false;
+    if (type === "object") return new Object;
+    if (type === "array") return new Array;
+    return undefined;
+  }
 
-  private checkType(value: T) {
-    // console.log(typeof this.items[index])
-    if (this.firstType === undefined) {
-      this.firstType = typeof value;
-    } else {
-      if (typeof value !== this.firstType) {
-        throw new Error(
-          `Value ${value} does not match the first type ${this.firstType}`
-        );
+  private validate(): void {
+    for (let i: number = 1; i < this.size; i++) {
+      let itemType = Array.isArray(this.items[i]) ? "array" : typeof this.items[i];
+
+      if (itemType != this.arrType) {
+
+        if (this.items[i] === undefined) {
+          this.items[i] = this.nothingType(this.arrType);
+        } else {
+          throw new Error(
+            `Type mismatch at index ${i}: expected '${this.arrType}', got '${itemType}'`
+          );
+        }
       }
     }
   }
 
-  public toLiteral(): (T | undefined)[] {
+  public get(index?: number): T | T[] {
+    if (index !== undefined) {
+      return this.items[index];
+    }
     return [...this.items];
   }
 
-  private updatePreSum() {
-    //we dont need verify each value of array, because the method checkType
-    //
+  public set(index: number, value: T | T[] | {}): void {
 
-    const result: number[] = new Array(this.size);
-
-    let acc = 0;
-
-    for (let i = 0; i < this.size; i++) {
-      const val = (this.items[i] as number) ?? 0
-      //?? 0 → if undefined, define to 0.
-      acc += val;
-      result[i] = acc;
+    if (index >= this.size) {
+      throw new Error("Array size exceeded!");
     }
-    this.presum = result;
+    if (index < 0) {
+      throw new Error("negative index???");
+    }
+
+    let itemType = Array.isArray(value) ? "array" : typeof value;
+
+    if (itemType !== this.arrType) {
+      throw new Error(
+        `Type mismatch at value ${value}: expected '${this.arrType}', got '${itemType}'`
+      );
+    }
+
+    this.items[index] = value;
   }
-
-  public rangeSum(startRange: number, finalRange: number): number {
-    this.checkIndex(startRange);
-    this.checkIndex(finalRange);
-
-    let toTheExtendIwant = this.presum[finalRange];
-    //sum of everything that comes before the value of that finalRange that i want
-
-    let whatIdontWant = this.presum[startRange - 1];
-    //sum of everything that comes before the value of that start range that i want
-
-    if (startRange === 0) return this.presum[finalRange];
-
-    //Where can I find the sum of the part I don’t want?
-    //
-    // In the preSum array, at the index immediately before my starting index.
-
-    let justWhatIwant = toTheExtendIwant - whatIdontWant;
-
-    return justWhatIwant;
-  }
-
 }
-
-// 0 =1
-// 0 + 1
