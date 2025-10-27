@@ -68,14 +68,14 @@ export default class Arr<T> {
     return this.items;
   }
 
-  public get(): T[] | undefined;//type Overload
-  public get(index?: number): T | undefined
-  public get(index?: number): T | T[] | undefined {
+  public get(): T[];//type Overload
+  public get(index: number): T;
+  public get(index?: number): T | T[] {
     if (index !== undefined) {
       return this.items[index];
     }
     if (this.length == 0) {
-      return undefined
+      console.log(`empty ${this.arrType}`)
     }
     return [...this.items];
   }
