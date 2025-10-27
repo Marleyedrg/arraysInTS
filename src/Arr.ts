@@ -1,20 +1,47 @@
-export class Arr<T> {
-  private size: number;
+export default class Arr<T> {
+
+  /**
+  *readonly
+  *max size defined in constructor 
+  */
+  public readonly maxSize: number;
+
   public length: number;
   private items: T[];
-  private arrType: string;
+  /**
+  *readonly
+  *array type defined in constructor
+  */
+  private readonly arrType: string;
 
-  constructor(size: number, items: T[]) {
+  private getType(crrItem: T | T[]) {
+    return Array.isArray(crrItem) ? "array" : typeof crrItem;
+  }
+
+  constructor(size: number, items: T[], arrType?: string) {
+
+    if (items.length == 0 && arrType === undefined) {
+      throw new Error(
+        "You need pass unless one element in items parameter to define type, or use type parameter"
+      );
+    }
+
     if (items.length > size) {
-      throw new Error("Array size exceeded!");
+      throw new Error("Array max size exceeded!");
     }
 
     this.items = items;
-    this.arrType = Array.isArray(items[0]) ? "array" : typeof items[0];
-    this.size = size;
-    this.length = size;
 
-    this.validate();
+    if (arrType !== undefined) {
+      this.arrType = arrType;
+    } else {
+      this.arrType = this.getType(items[0]);
+    }
+
+    this.maxSize = size;
+
+    this.length = items.length;
+
   }
 
   private nothingType(type: string): any {
@@ -26,23 +53,8 @@ export class Arr<T> {
     return undefined;
   }
 
-  private validate(): void {
-    for (let i: number = 1; i < this.size; i++) {
-      let itemType = Array.isArray(this.items[i]) ? "array" : typeof this.items[i];
-
-      if (itemType != this.arrType) {
-
-        if (this.items[i] === undefined) {
-          this.items[i] = this.nothingType(this.arrType);
-        } else {
-          throw new Error(
-            `Type mismatch at index ${i}: expected '${this.arrType}', got '${itemType}'`
-          );
-        }
-      }
-    }
-  }
-
+  public get(): T[];//sobrecarga de tipo
+  public get(index: number): T;
   public get(index?: number): T | T[] {
     if (index !== undefined) {
       return this.items[index];
@@ -52,8 +64,12 @@ export class Arr<T> {
 
   public set(index: number, value: any): void {
 
-    if (index > this.size) {
-      throw new Error("Array size exceeded!");
+    if (index >= this.maxSize) {
+      throw new Error("Array maxSize exceeded!");
+    }
+
+    if (index >= this.length) {
+      this.length++;
     }
 
     let itemType = Array.isArray(value) ? "array" : typeof value;
@@ -67,31 +83,26 @@ export class Arr<T> {
     this.items[index] = value;
   }
 
-  private removeAt(index: number): T | T[] {
-    let value = this.items[index];
+  private removedAt(index: number) {
+    let removed = this.items[index];
 
-    let itemType = Array.isArray(value) ? "array" : typeof value;
+    if (index == 0) {
+      this.items.shift();
+    }
+    if (index == this.items.length - 1) {
+      this.items.pop();
+    }
 
-    this.items[index] = this.nothingType(itemType);
+    this.length = this.items.length;
 
-    return value;
+    return removed;
   }
 
   public shift(): T | T[] {
-    let index = 0;
-    let removed = this.removeAt(index);
-
-    // move elemts to left
-    for (let i = index; i < this.size - 1; i++) {
-      this.items[i] = this.items[i + 1];
-    }
-
-    // Clears the last slot 
-    this.items[this.size - 1] = this.nothingType(this.arrType);
-    return removed;
+    return this.removedAt(0);
   };
   public pop(): T | T[] {
-    return this.removeAt(this.size - 1);
+    return this.removedAt(this.items.length - 1);
   };
 }
 
