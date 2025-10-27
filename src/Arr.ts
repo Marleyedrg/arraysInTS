@@ -18,7 +18,7 @@ export default class Arr<T> {
     return Array.isArray(crrItem) ? "array" : typeof crrItem;
   }
 
-  constructor(size: number, items: T[], arrType?: string) {
+  constructor(items: T[], size?: number, arrType?: string) {
 
     if (items.length == 0 && arrType === undefined) {
       throw new Error(
@@ -26,11 +26,15 @@ export default class Arr<T> {
       );
     }
 
-    if (items.length > size) {
+    this.items = items;
+
+    if (!size) {
+      size = this.items.length;
+
+    } else if (items.length > size) {
+
       throw new Error("Array max size exceeded!");
     }
-
-    this.items = items;
 
     if (arrType !== undefined) {
       this.arrType = arrType;
@@ -38,9 +42,9 @@ export default class Arr<T> {
       this.arrType = this.getType(items[0]);
     }
 
-    this.maxSize = size;
-
     this.length = items.length;
+
+    this.maxSize = size;
 
   }
 
@@ -53,11 +57,25 @@ export default class Arr<T> {
     return undefined;
   }
 
-  public get(): T[];//sobrecarga de tipo
-  public get(index: number): T;
-  public get(index?: number): T | T[] {
+  public fill(): T[] {
+    for (let i = 0; i < this.maxSize; i++) {
+      if (this.items[i] !== undefined) {
+        continue;
+      };
+      this.items[i] = this.nothingType(this.arrType);
+    };
+    this.length = this.items.length;
+    return this.items;
+  }
+
+  public get(): T[] | undefined;//type Overload
+  public get(index?: number): T | undefined
+  public get(index?: number): T | T[] | undefined {
     if (index !== undefined) {
       return this.items[index];
+    }
+    if (this.length == 0) {
+      return undefined
     }
     return [...this.items];
   }
@@ -105,4 +123,3 @@ export default class Arr<T> {
     return this.removedAt(this.items.length - 1);
   };
 }
-
