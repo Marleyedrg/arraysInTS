@@ -72,6 +72,9 @@ export default class Arr<T> {
   public get(index: number): T;
   public get(index?: number): T | T[] {
     if (index !== undefined) {
+
+      index = this.SupnegativeIndex(index);
+
       return this.items[index];
     }
     if (this.length == 0) {
@@ -81,6 +84,8 @@ export default class Arr<T> {
   }
 
   public set(index: number, value: any): void {
+
+    index = this.SupnegativeIndex(index);
 
     if (index >= this.maxSize) {
       throw new Error("Array maxSize exceeded!");
@@ -122,4 +127,29 @@ export default class Arr<T> {
   public pop(): T | T[] {
     return this.removedAt(this.items.length - 1);
   };
+
+
+
+  /**
+   * Returns the correct index when a negative value is used.
+   * For example, if the array length = 5:
+   *  -1 -> 4
+   *  -5 -> 0
+   *  -6 -> error (out of bounds)
+   *
+   * if positive, return as is.
+   */
+  private SupnegativeIndex(value: number): number {
+    let length = this.items.length;
+
+    if (value < 0) {
+      const index = length + value;
+      if (index < 0 || index >= length) {
+        throw new Error("Array maxSize exceeded!");
+      }
+      return index;
+    }
+    return value;//if positive
+  }
 }
+
