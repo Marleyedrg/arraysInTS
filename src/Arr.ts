@@ -1,4 +1,11 @@
 export default class Arr<T> {
+  private static readonly defaultValues: Record<string, any> = {
+    string: "",
+    number: 0,
+    boolean: false,
+    object: {},
+    array: [],
+  };
 
   /**
   *readonly
@@ -49,12 +56,7 @@ export default class Arr<T> {
   }
 
   private nothingType(type: string): any {
-    if (type === "string") return "";
-    if (type === "number") return 0;
-    if (type === "boolean") return false;
-    if (type === "object") return new Object;
-    if (type === "array") return new Array;
-    return undefined;
+    return Arr.defaultValues[type] ?? undefined;
   }
 
   public fill(): T[] {
@@ -73,7 +75,7 @@ export default class Arr<T> {
   public get(index?: number): T | T[] {
     if (index !== undefined) {
 
-      index = this.SupnegativeIndex(index);
+      index = this.fixIndex(index, this.maxSize);
 
       return this.items[index];
     }
@@ -85,7 +87,7 @@ export default class Arr<T> {
 
   public set(index: number, value: any): void {
 
-    index = this.SupnegativeIndex(index);
+    index = this.fixIndex(index, this.maxSize);
 
     if (index >= this.maxSize) {
       throw new Error("Array maxSize exceeded!");
@@ -139,17 +141,8 @@ export default class Arr<T> {
    *
    * if positive, return as is.
    */
-  private SupnegativeIndex(value: number): number {
-    let length = this.items.length;
-
-    if (value < 0) {
-      const index = length + value;
-      if (index < 0 || index >= length) {
-        throw new Error("Array maxSize exceeded!");
-      }
-      return index;
-    }
-    return value;//if positive
+  private fixIndex(value: number, size: number): number {
+    return value < 0 ? size + value : value;
   }
 }
 
