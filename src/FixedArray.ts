@@ -1,4 +1,4 @@
-export default class Arr<T> {
+export default class FixedArr<T> {
   private static readonly defaultValues: Record<string, any> = {
     string: "",
     number: 0,
@@ -56,7 +56,7 @@ export default class Arr<T> {
   }
 
   private nothingType(type: string): any {
-    return Arr.defaultValues[type] ?? undefined;
+    return FixedArr.defaultValues[type] ?? undefined;
   }
 
   public fill(): T[] {
