@@ -1,11 +1,6 @@
+import TypeItem from "./TypeItem";
+import fixIndex from "./fixIndex";
 export default class FixedArr<T> {
-  private static readonly defaultValues: Record<string, any> = {
-    string: "",
-    number: 0,
-    boolean: false,
-    object: {},
-    array: [],
-  };
 
   /**
   *readonly
@@ -14,16 +9,12 @@ export default class FixedArr<T> {
   public readonly maxSize: number;
 
   public length: number;
-  private items: T[];
+  protected items: T[];
   /**
   *readonly
   *array type defined in constructor
   */
-  private readonly arrType: string;
-
-  private getType(crrItem: T | T[]) {
-    return Array.isArray(crrItem) ? "array" : typeof crrItem;
-  }
+  protected readonly arrType: string;
 
   constructor(items: T[], size?: number, arrType?: string) {
 
@@ -46,7 +37,7 @@ export default class FixedArr<T> {
     if (arrType !== undefined) {
       this.arrType = arrType;
     } else {
-      this.arrType = this.getType(items[0]);
+      this.arrType = TypeItem.getType(items[0]);
     }
 
     this.length = items.length;
@@ -55,16 +46,13 @@ export default class FixedArr<T> {
 
   }
 
-  private nothingType(type: string): any {
-    return FixedArr.defaultValues[type] ?? undefined;
-  }
 
   public fill(): T[] {
     for (let i = 0; i < this.maxSize; i++) {
       if (this.items[i] !== undefined) {
         continue;
       };
-      this.items[i] = this.nothingType(this.arrType);
+      this.items[i] = TypeItem.nothingType(this.arrType);
     };
     this.length = this.items.length;
     return this.items;
@@ -73,9 +61,14 @@ export default class FixedArr<T> {
   public get(): T[];//type Overload
   public get(index: number): T;
   public get(index?: number): T | T[] {
+
     if (index !== undefined) {
 
-      index = this.fixIndex(index, this.maxSize);
+      if (index > this.maxSize - 1) {
+        throw new Error("Array max size exceeded!");
+      }
+
+      index = fixIndex(index, this.maxSize);
 
       return this.items[index];
     }
@@ -87,7 +80,7 @@ export default class FixedArr<T> {
 
   public set(index: number, value: any): void {
 
-    index = this.fixIndex(index, this.maxSize);
+    index = fixIndex(index, this.maxSize);
 
     if (index >= this.maxSize) {
       throw new Error("Array maxSize exceeded!");
@@ -131,18 +124,5 @@ export default class FixedArr<T> {
   };
 
 
-
-  /**
-   * Returns the correct index when a negative value is used.
-   * For example, if the array length = 5:
-   *  -1 -> 4
-   *  -5 -> 0
-   *  -6 -> error (out of bounds)
-   *
-   * if positive, return as is.
-   */
-  private fixIndex(value: number, size: number): number {
-    return value < 0 ? size + value : value;
-  }
 }
 

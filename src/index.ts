@@ -1,13 +1,13 @@
 import FixedArr from "./FixedArray";
 import List, { ListWithLoop } from "./List";
 import DoublyList from "./DoublyList";
+import ArrayList from "./ArrayList";
 
-const dlist: DoublyList<number> = new DoublyList;
+const arr = new ArrayList<number>([1], 1)
 
-dlist.add(1);
-dlist.add(2);
-dlist.add(3);
+arr.add(10)
 
+arr.add(10)
 
-console.log();
+console.log(arr.get());
 
