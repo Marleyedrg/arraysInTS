@@ -3,14 +3,13 @@ import List, { ListWithLoop } from "./List";
 import DoublyList from "./DoublyList";
 import ArrayList from "./ArrayList";
 
-const arr = new ArrayList<number>([53], 1)
+const list = new DoublyList<number>;
+
+list.add(1);
+list.add(2);
+list.add(3);
+
+console.log(list.head?.next?.next?.next?.data)
 
 
-arr.add(10);
-arr.set(1, 2);
-
-arr.add(12)
-arr.set(2, 3);
-
-console.log(arr.set(0, 1));
 

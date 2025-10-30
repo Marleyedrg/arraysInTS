@@ -16,6 +16,7 @@ export default class FixedArr<T> {
   */
   protected readonly arrType: string;
 
+
   constructor(items: T[], size?: number, arrType?: string) {
 
     if (items.length == 0 && arrType === undefined) {
@@ -118,10 +119,10 @@ export default class FixedArr<T> {
     return removed;
   }
 
-  public shift(): T | T[] {
+  public shift(): T {
     return this.removedAt(0);
   };
-  public pop(): T | T[] {
+  public pop(): T {
     return this.removedAt(this.items.length - 1);
   };
 

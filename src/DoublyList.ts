@@ -1,40 +1,57 @@
-import List from "./List";
-
-interface node<T> {
-  prev: node<T> | null,
+interface Node<T> {
+  prev: Node<T> | null,
   data: T,
-  next: node<T> | null,
+  next: Node<T> | null
 }
-//circular doubly list
-export default class DoublyList<T> {
-  head: node<T> | null = null;
-  tail: node<T> | null = null;
 
-  add(value: T) {
-    const newNode: node<T> = {
+export default class DoublyList<T> {
+  public head: Node<T> | null = null;
+  public tail: Node<T> | null = this.head;
+
+  protected circular() {
+
+    if (this.head === null || this.tail === null) {
+      throw new Error;
+    }
+
+    this.head.prev = this.tail;
+
+    this.tail.next = this.head;
+  }
+
+  public add(value: T) {
+
+    const newNode: Node<T> = {
       prev: null,
       data: value,
       next: null
-    };
+    }
 
     if (this.head === null) {
-
       this.head = newNode;
+
       this.tail = newNode;
 
-      this.head.prev = this.tail;
-
+      this.circular();
       return;
     }
 
-    if (this.tail !== null) {
-      newNode.prev = this.tail;
-      this.tail.next = newNode;
+    if (this.tail === null) {
+      throw new Error;
     }
 
+    const lastTail: Node<T> = this.tail;
+
     this.tail = newNode;
-    this.tail.next = this.head;
 
+    this.tail.prev = lastTail;
+
+    lastTail.next = this.tail;
+
+    this.circular();
   }
-}
 
+
+
+
+}
