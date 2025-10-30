@@ -1,22 +1,26 @@
 import FixedArr from "./FixedArray";
-import fixIndex from "./fixIndex";
 import TypeItem from "./TypeItem";
 export default class ArrayList<T> extends FixedArr<T> {
 
   override maxSize: number = this.length;
   //apenas ignora maxSize para continuar funcionando como herdado de FixedArr
-  protected override arrType: string = this.arrType;
 
   public add(value: T): void {
-    let itemType = Array.isArray(value) ? "array" : typeof value;
+    let itemType = TypeItem.getType(value);
 
     if (itemType !== this.arrType) {
       throw new Error(
         `Type mismatch at value ${value}: expected '${this.arrType}', got '${itemType}'`
       );
     }
-    this.items[this.length] = value;
-    this.length++;
-    this.maxSize++;
+    let previousArray = this.get();
+    console.log(previousArray);
+
+    const newArray = new FixedArr<T>([...previousArray, value]);
+
+    this.items = newArray.get();
+
+    this.length = this.items.length;
+    this.maxSize = this.length;
   }
 }

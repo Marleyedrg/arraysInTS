@@ -78,7 +78,7 @@ export default class FixedArr<T> {
     return [...this.items];
   }
 
-  public set(index: number, value: any): void {
+  public set(index: number, value: any): T[] {
 
     index = fixIndex(index, this.maxSize);
 
@@ -90,7 +90,7 @@ export default class FixedArr<T> {
       this.length++;
     }
 
-    let itemType = Array.isArray(value) ? "array" : typeof value;
+    let itemType = TypeItem.getType(value);
 
     if (itemType !== this.arrType) {
       throw new Error(
@@ -99,6 +99,8 @@ export default class FixedArr<T> {
     }
 
     this.items[index] = value;
+
+    return this.get();
   }
 
   private removedAt(index: number) {

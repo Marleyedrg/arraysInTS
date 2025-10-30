@@ -12,7 +12,6 @@ export default class TypeItem {
     return Array.isArray(crrItem) ? "array" : typeof crrItem;
   }
 
-
   public static nothingType(type: string): any {
     return TypeItem.defaultValues[type] ?? undefined;
   }

@@ -9,6 +9,12 @@
  * if positive, return as is.
  */
 export default function fixIndex(value: number, size: number): number {
-  return value < 0 ? size + value : value;
+  const result = value < 0 ? size + value : value;
+
+  if (result < 0) {
+    throw Error("error (out of bounds)!!!")
+  }
+
+  return result;
 
 }
