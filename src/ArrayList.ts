@@ -13,10 +13,7 @@ export default class ArrayList<T> extends FixedArr<T> {
         `Type mismatch at value ${value}: expected '${this.arrType}', got '${itemType}'`
       );
     }
-    let previousArray = this.get();
-    console.log(previousArray);
-
-    const newArray = new FixedArr<T>([...previousArray, value]);
+    const newArray = new FixedArr<T>([...(this.get()), value]);
 
     this.items = newArray.get();
 
