@@ -1,17 +1,15 @@
-import FixedArr from "./FixedArray";
-import List, { ListWithLoop } from "./List";
 import DoublyList from "./DoublyList";
-import ArrayList from "./ArrayList";
 
 const list = new DoublyList<number>;
 
 list.add(1);
 list.add(2);
+list.add(3);
 
-list.remove(4);
+list.remove(2);
 
-console.log(list.head)
-
+list.add(7)
+console.log(list.head?.next?.data);
 
 
 
