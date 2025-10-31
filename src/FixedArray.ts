@@ -2,6 +2,7 @@ import TypeItem from "./TypeItem";
 import fixIndex from "./fixIndex";
 export default class FixedArr<T> {
 
+
   /**
   *readonly
   *max size defined in constructor 
