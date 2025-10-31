@@ -1,3 +1,4 @@
+
 export default class TypeItem {
 
   private static readonly defaultValues: Record<string, any> = {
