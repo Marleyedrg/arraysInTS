@@ -2,6 +2,7 @@ interface Node<T> {
   data: T,
   next: Node<T> | null,
 }
+
 export default class List<T> {
 
   head: Node<T> | null = null;
