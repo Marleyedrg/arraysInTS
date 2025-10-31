@@ -25,16 +25,13 @@ Compile and run with: `npm run see`
 EX:
 ~~~ts
 //src/index.ts
-import { Arr } from "./Arr.ts"
 import { MaxProfit } from "./maxProfit.ts";
-import { MaxSubArray } from "./maxSubArray.ts";
-import { TwoSum } from "./TwoSum.ts";
 
 const nums: number[] = [7, 6, 4, 3, 1];
 
 console.log(MaxProfit.calc(nums));
 ~~~
-compile e execute 
+compile and execute 
 ~~~bash
 npm run see
 ~~~
