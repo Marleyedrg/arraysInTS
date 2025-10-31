@@ -1,4 +1,5 @@
 
+
 /**
  * Returns the correct index when a negative value is used.
  * For example, if the array length = 5:
