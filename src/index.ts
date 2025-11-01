@@ -1,15 +1,5 @@
-import DoublyList from "./DoublyList";
+import FixedNumberArray from "./FixedNumberArray"
 
-const list = new DoublyList<number>;
+let arr: FixedNumberArray = new FixedNumberArray(4, [1, 2, 3, 4, 5]);
 
-list.add(1);
-list.add(2);
-list.add(3);
-
-list.remove(2);
-
-list.add(7)
-console.log(list.head?.next?.data);
-
-
-
+console.log(arr);

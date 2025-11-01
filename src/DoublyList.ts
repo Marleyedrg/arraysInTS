@@ -88,10 +88,10 @@ export default class DoublyList<T> {
     if ((currNode.next && currNode.prev) && currNode.data === value) {
       //(a <-> currNode <-> c)
 
-      //lets remove currNode
-
       const a: Node<T> = currNode.prev;
       const c: Node<T> = currNode.next;
+
+      //lets remove currNode
 
       a.next = c;
       //a.next = c
