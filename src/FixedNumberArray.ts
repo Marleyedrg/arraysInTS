@@ -1,28 +1,20 @@
-export default class FixedNumberArray {
+export default function FixedNumberArray(size: number, values: number[]) {
 
-  private sizeOfArray: number;
-  //size we want
+  const byterByItem = Int32Array.BYTES_PER_ELEMENT;
 
-  private byterByItem = Int32Array.BYTES_PER_ELEMENT;
   //In this case, on a 32-bit system, we are defining that we want to use 4 bytes to represent each int.
 
-  private buffer: ArrayBuffer;
+  const sizeOfArray: number = size;
 
-  private arr: Int32Array;
+  const buffer: ArrayBuffer = new ArrayBuffer(sizeOfArray * byterByItem);
+  //take continous free space that we want
+  //hexadecimal value by index
 
-  constructor(size: number, values: number[]) {
-    this.sizeOfArray = size;
+  const arr: Int32Array = new Int32Array(buffer);
 
-    this.buffer = new ArrayBuffer(this.sizeOfArray * this.byterByItem);
-    //hexadecimal value by index
-
-    this.arr = new Int32Array(this.buffer);
-
-    for (let i = 0; i < this.sizeOfArray; i++) {
-      this.arr[i] = values[i];
-    }
-
-    return this.arr;
+  for (let i = 0; i < sizeOfArray; i++) {
+    arr[i] = values[i];
   }
 
+  return arr;
 }
